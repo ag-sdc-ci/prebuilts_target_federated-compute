@@ -1,0 +1,107 @@
+// Auto-generated prebuilt APEX Blueprint for external/federated-compute
+// Staged from Extractive APEX package: ext-federated-compute (org.blisslabs.ag.ext.federated-compute)
+
+package {
+    default_applicable_licenses: ["external_federated_compute_license"],
+}
+
+license {
+    name: "external_federated_compute_license",
+    visibility: [":__subpackages__"],
+    license_kinds: [
+        "SPDX-license-identifier-Apache-2.0",
+    ],
+    license_text: [
+        "LICENSE",
+    ],
+}
+
+cc_library_headers {
+    name: "libfederatedcompute_headers",
+    export_include_dirs: [
+        ".",
+        "include",
+    ],
+    sdk_version: "current",
+    min_sdk_version: "33",
+    apex_available: ["com.android.ondevicepersonalization"],
+}
+
+cc_prebuilt_library_static {
+    name: "libfederatedcompute",
+    srcs: ["lib/libfederatedcompute.a"],
+    export_include_dirs: [
+        ".",
+        "include",
+    ],
+    sdk_version: "current",
+    min_sdk_version: "33",
+    apex_available: ["com.android.ondevicepersonalization"],
+}
+
+cc_prebuilt_library {
+    name: "federated-compute-cc-proto-lite",
+    static: {
+        srcs: ["lib/libfederated-compute-cc-proto-lite.a"],
+    },
+    shared: {
+        srcs: ["lib/federated-compute-cc-proto-lite.so"],
+    },
+    export_include_dirs: [
+        ".",
+        "include",
+    ],
+    sdk_version: "current",
+    min_sdk_version: "33",
+    apex_available: ["com.android.ondevicepersonalization"],
+}
+
+java_library_static {
+    name: "federated-compute-java-proto-lite",
+    proto: {
+        type: "lite",
+        canonical_path_from_root: false,
+        include_dirs: [
+            "external/protobuf/src",
+            "external/protobuf/java",
+            "external/tensorflow",
+            "prebuilts/target/external/tensorflow",
+        ],
+    },
+    srcs: [
+        "fcp/protos/ondevicepersonalization/task_assignments.proto",
+        "fcp/protos/ondevicepersonalization/eligibility_spec.proto",
+        "fcp/protos/federatedcompute/common.proto",
+        "fcp/protos/plan.proto",
+        "fcp/client/**/*.proto",
+        ":libprotobuf-internal-protos",
+    ],
+    static_libs: [
+        "libprotobuf-java-lite",
+        "tensorflow_core_proto_java_lite",
+    ],
+    sdk_version: "current",
+    min_sdk_version: "33",
+    apex_available: ["com.android.ondevicepersonalization"],
+}
+
+filegroup {
+    name: "fcp_native_wrapper",
+    srcs: ["fcp/java_src/main/java/com/google/fcp/client/CallFromNativeWrapper.java"],
+    visibility: [
+        "//packages/modules/OnDevicePersonalization:__subpackages__",
+    ],
+}
+
+filegroup {
+    name: "fcp_artifacts_testdata",
+    srcs: [
+        "fcp/testdata/federation_client_only_plan.pb",
+        "fcp/testdata/federation_proxy_train_examples.pb",
+        "fcp/testdata/federation_test_checkpoint.client.ckp",
+        "fcp/testdata/federation_test_select_checkpoints.pb",
+    ],
+    visibility: [
+        "//packages/modules/OnDevicePersonalization:__subpackages__",
+    ],
+}
